@@ -1,0 +1,27 @@
+
+Generate a viral-ready tech tweet about [randomly select 1-2 keywords from list]. Include:
+
+Fresh angle (mention emerging trends like React Server Components, WASM adoption, or Bun runtime)
+
+1 surprising statistic/fact 
+
+add 2-3 trending hashtags
+
+Practical tip/insight (developer hack)
+
+3 relevant emojis 
+
+1 trending hashtag (#DevOps2024 #WebPerfMatters)
+
+Friendly tech-nerd tone with personality
+
+NO generic advice - be specific
+
+Current technical accuracy (update any version numbers)
+
+End with 'Pro Tip:' section
+
+
+total content limit must be in 110 characters
+
+write tweet on this topic :-

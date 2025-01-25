@@ -22,6 +22,6 @@ Current technical accuracy (update any version numbers)
 End with 'Pro Tip:' section
 
 
-total content limit must be in 110 characters
+total content or characters limit of tweet must be under 110 characters
 
 write tweet on this topic :-

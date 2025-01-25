@@ -1,29 +1,32 @@
+import cron from 'node-cron'
 import dotenv from "dotenv";
-import { generateContentFromGemini } from "./controllers/Ai.js";
-import { postTweet } from "./controllers/tweet.js";
-import fs from "fs/promises"; 
+dotenv.config(); 
+
+import { TweetService } from "./service/Tweet.Service.js"
+import { sendLogToAdmin, defaultBotListen } from './controllers/TgBot.js';
+
+const chatId = process.env.CHATT_ID || 6494985368
 
 
-dotenv.config(
-  { path: "./.env" }
-); 
+//Sheduling Tweet
 
-async function main() {
+cron.schedule("0 9,13,16,20,22 * * *", async () => {
+
+  const log =  `Cron job started at:, ${new Date().toLocaleString()}`
+  const log2 = `Cron job completed at:, ${new Date().toLocaleString()}`
+
+  console.log(log);
+  sendLogToAdmin(chatId, log)
+  
   try {
-
-    const filepath = "./src/query.txt"; 
-
-    const query = await fs.readFile(filepath, { encoding: "utf-8" });
-    console.log("QUERY:", query);
-
-    const tweet = await generateContentFromGemini(query); 
-    console.log("Generated tweet:", tweet);
-
-      await postTweet(tweet);
+    await TweetService();
+    console.log(log2);
+    sendLogToAdmin(chatId, log2)
+    
   } catch (error) {
-    console.error("Error in main function:", error);
+    console.error("Cron job failed:", error);
+    sendLogToAdmin(chatId, "Cron job failed:", error)
   }
-}
+});
 
-
-main();
+defaultBotListen()

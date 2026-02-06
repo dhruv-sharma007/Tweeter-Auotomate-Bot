@@ -1,22 +1,16 @@
 import express from "express";
-import cron from 'node-cron';
-import dotenv from "dotenv";
-import { TweetService } from "./service/Tweet.Service.js";
-import { sendLogToAdmin, defaultBotListen } from './controllers/TgBot.js';
-
-// Load environment variables
-dotenv.config();
+import cron from "node-cron";
+import { assertRequiredConfig, envConfig } from "./config/env.js";
+import { startTelegramBotListener } from "./integrations/telegramBot.js";
+import { sendAdminLog } from "./integrations/telegramClient.js";
+import { runTweetService } from "./services/tweetService.js";
 
 const app = express();
-const port = process.env.PORT || 8927;
-const chatId = process.env.CHAT_ID || 6494985368;
+const port = envConfig.port;
+const chatId = envConfig.telegram.adminChatId;
 
 // Validate required environment variables
-
-if (!process.env.CHAT_ID) {
-  console.error("CHATT_ID environment variable is missing.");
-  process.exit(1);
-}
+assertRequiredConfig();
 
 // Logging function for consistency
 const logMessage = async (message) => {
@@ -25,7 +19,7 @@ const logMessage = async (message) => {
   console.log(log);
 
   try {
-    await sendLogToAdmin(chatId, log);
+    await sendAdminLog(chatId, log);
   } catch (error) {
     console.error(`Failed to send log to admin: ${error.message}`);
   }
@@ -37,7 +31,7 @@ cron.schedule("0 9,13,16,20,22 * * *", async () => {
   await logMessage(`Cron job started at: ${startTime}`);
 
   try {
-    await TweetService();
+    await runTweetService();
     const endTime = new Date().toLocaleString();
     await logMessage(`Cron job completed at: ${endTime}`);
   } catch (error) {
@@ -48,7 +42,7 @@ cron.schedule("0 9,13,16,20,22 * * *", async () => {
 
 // Start Telegram bot listener
 try {
-  defaultBotListen();
+  startTelegramBotListener();
   await logMessage("Telegram bot listener started successfully.");
 } catch (error) {
   await logMessage(`Failed to start Telegram bot listener: ${error.message}`);
@@ -95,4 +89,3 @@ process.on('unhandledRejection', async (reason, promise) => {
   console.error(reason); // Log the full reason for debugging
   process.exit(1); // Exit with failure
 });
-

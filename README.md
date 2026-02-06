@@ -56,11 +56,13 @@ Generate and post tweets using Google's Gemini AI and the X (Twitter) API. The b
    Create a `.env` file in the project root:
 
    ```bash
-   API_KEY=your_twitter_api_key
-   API_SECRET_KEY=your_twitter_api_secret
-   ACCESS_TOKEN=your_twitter_access_token
-   ACCESS_TOKEN_SECRET=your_twitter_access_secret
-   GEMINI_API=your_gemini_api_key
+   TWITTER_API_KEY=your_twitter_api_key
+   TWITTER_API_SECRET=your_twitter_api_secret
+   TWITTER_ACCESS_TOKEN=your_twitter_access_token
+   TWITTER_ACCESS_SECRET=your_twitter_access_secret
+   GEMINI_API_KEY=your_gemini_api_key
+   TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+   TELEGRAM_ADMIN_CHAT_ID=your_admin_chat_id
    ```
 
 4. **Add a prompt**
@@ -121,4 +123,3 @@ npm run dev
 1. Fork the repo and create a branch.
 2. Make your changes and add tests if needed.
 3. Open a pull request with a clear description.
-
